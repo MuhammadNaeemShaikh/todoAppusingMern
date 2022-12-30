@@ -40,9 +40,9 @@ app.post('/todo', (req, res) => {
     },
     function (error, success) {
         if (error) {
-            console.log(error);
+            res.send(error);
         } else {
-            console.log(success);
+            res.send(success);
         }
     })
 })
@@ -89,22 +89,14 @@ app.post('/todo', (req, res) => {
 app.get('/todos/:getName', (req, res) => {
     // Get the userId from the request params
     const userId = req.params.getName;
-
-    // Find all todos for the user
-    // userSchema.find({ userId }, (error, users) => {
-    //   if (error) {
-    //     res.send(error);
-    //   } else {
-    //     res.send(users);
-    //   }
-    // });
-
-    userSchema.find({}, function(err, users){
+    // Get the specific user from database
+    userSchema.findOne({email:userId}, function(err, users){
         if(err){
             console.log(err);
+
         }
         else {
-            res.json(users);
+            res.json(users.task);
         }
     });
     console.log("param user id",userId);
