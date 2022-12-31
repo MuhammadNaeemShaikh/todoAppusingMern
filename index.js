@@ -26,6 +26,9 @@ process.on('UnhandledRejection', error => {
     console.log('DB error', error);
 });
 
+
+// inserting data into database
+
 app.post('/todo', (req, res) => {
     const {
         userId,
@@ -47,13 +50,55 @@ app.post('/todo', (req, res) => {
     })
 })
 
+//fetching data from data base
+
+app.get('/todos/:getName', (req, res) => {
+    // Get the userId from the request params
+    const userId = req.params.getName;
+    // Get the specific user from database
+    userSchema.findOne({email:userId}, function(err, users){
+        if(err){
+            console.log(err);
+
+        }
+        else {
+            res.json(users.task);
+        }
+    });
+});
+
+//delete array item from db
+
+// const db = client.dbName(myDb)
+// const collection = db.collection(users)
+
+app.get('/dlttodos', (req, res) => {
+    userSchema.updateOne(
+        { _id: "63aedc32ff84b917de11ad1a" },
+        { $pull: { task:"Naeem Shaikh" } },
+        (Err, result) => {
+            if (Err) {
+              console.error(Err);
+              res.status(500).send({ error: 'Error deleting item from array' });
+              return;
+            }
+    
+            res.send(result);
+          }
+    )
+   
+});
+
 // Create a schema for the todo list
 // const todoSchema = new mongoose.Schema({
 //     userId: {
 //         type: String,
 //         required: true,
 //     },
-//     input: [String],
+//     input: {
+//             type:String,
+//             required:true
+//         },
 // });
 
 // // Create a model for the todo list
@@ -86,21 +131,24 @@ app.post('/todo', (req, res) => {
 
 
 
-app.get('/todos/:getName', (req, res) => {
-    // Get the userId from the request params
-    const userId = req.params.getName;
-    // Get the specific user from database
-    userSchema.findOne({email:userId}, function(err, users){
-        if(err){
-            console.log(err);
 
-        }
-        else {
-            res.json(users.task);
-        }
-    });
-    console.log("param user id",userId);
-});
+// app.get('/todos/:getName', (req, res) => {
+//     // Get the userId from the request params
+//     const userId = req.params.getName;
+//     // Get the specific user from database
+//     Todo.find({email:userId}, function(err, users){
+//         if(err){
+//             console.log(err);
+
+//         }
+//         else {
+//             res.json(users);
+//             console.log("users.input",users)
+//         }
+//     });
+//     console.log("param user id",userId);
+// });
+
 
 
 
