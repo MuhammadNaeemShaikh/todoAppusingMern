@@ -59,7 +59,6 @@ app.get('/todos/:getName', (req, res) => {
     userSchema.findOne({email:userId}, function(err, users){
         if(err){
             console.log(err);
-
         }
         else {
             res.json(users.task);
@@ -67,15 +66,35 @@ app.get('/todos/:getName', (req, res) => {
     });
 });
 
+// app.get('/dlttodos/:list', (req, res) => {
+
+//     // console.log(req.params.getName);
+//     console.log(req.params.list);
+//     // userSchema.updateOne({
+//     //     email:userId
+//     // },{
+//     //     $push:{
+//     //         task:input
+//     //     }
+//     // },
+//     // function (error, success) {
+//     //     if (error) {
+//     //         res.send(error);
+//     //     } else {
+//     //         res.send(success);
+//     //     }
+//     // })
+// })
+
 //delete array item from db
 
-// const db = client.dbName(myDb)
-// const collection = db.collection(users)
-
 app.get('/dlttodos', (req, res) => {
+    const {id,e} = req.query
+    console.log("call",id);
+    console.log("call",e);
     userSchema.updateOne(
-        { _id: "63aedc32ff84b917de11ad1a" },
-        { $pull: { task:"Naeem Shaikh" } },
+        { _id: id },
+        { $pull: { task:e } },
         (Err, result) => {
             if (Err) {
               console.error(Err);
