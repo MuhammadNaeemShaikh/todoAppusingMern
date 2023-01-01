@@ -1,7 +1,6 @@
 import { useState,useEffect } from 'react';
 import './welcome.css';
 import axios from 'axios';
-// import { Link,useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 const Welcome = () => {
@@ -14,8 +13,7 @@ const Welcome = () => {
     const [a, seta]= useState(0)
 
     const add = async () =>{
-        if(input){    
-            alert("posted");
+        if(input){
             const res = await axios.post('http://localhost:9000/todo',{input,userId:getName})
             seta(a+1);
         }
@@ -26,13 +24,9 @@ const Welcome = () => {
 
     //fetching data
     const getdata = async () => {
-        // const data = await axios.get(`http://localhost:9000/todos/${getName}`).then(data => data.data)
-        const dataComing = await axios.get(`http://localhost:9000/todos/${getName}`)
+         const dataComing = await axios.get(`http://localhost:9000/todos/${getName}`)
         const data = await dataComing.data;
         setList(data)
-        console.log("data",data)
-        console.log("list",list)
-
     }
     
     useEffect(() => {
@@ -41,9 +35,11 @@ const Welcome = () => {
 
     //deleting data
     const dlt = async (e) =>{
-        const datacoming = await axios.get('http://localhost:9000/dlttodos/${}')
-        const data = await datacoming.data
-        console.log("data",data)
+        
+        const datacoming = await axios.get(`http://localhost:9000/dlttodos/?id=${id}&e=${e}`)
+        const data = await datacoming.data 
+        seta(a+1);
+        
     }
     
     
@@ -58,7 +54,7 @@ const Welcome = () => {
                  {list.map((currentval,index)=>{
                  return(
                      <div key={index}>
-                         <span>{currentval} <i class="fa-thin fa-trash" onClick={()=>dlt(index)}></i></span>
+                         <span>{currentval} <i class="fas fa-eraser" onClick={()=>dlt(currentval)}></i></span>
                      </div>
                 )
              })} 
